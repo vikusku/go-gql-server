@@ -11,12 +11,28 @@ import (
 	"github.com/vikusku/go-gql-server/internal/gql/models"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input models.NewTodo) (*models.Todo, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, input models.UserInput) (*models.User, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*models.Todo, error) {
+func (r *mutationResolver) UpdateUser(ctx context.Context, input models.UserInput) (*models.User, error) {
 	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) DeleteUser(ctx context.Context, userID string) (bool, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+var id , email = "010", "test@sok.fi"
+
+func (r *queryResolver) Users(ctx context.Context, userID *string) ([]*models.User, error) {
+	return []*models.User{
+		{
+			ID:     &id,
+			Email:  &email,
+			UserID: userID,
+		},
+	}, nil
 }
 
 // Mutation returns gql.MutationResolver implementation.

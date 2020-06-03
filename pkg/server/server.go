@@ -8,18 +8,33 @@ import (
 	"github.com/vikusku/go-gql-server/internal/handlers"
 )
 
-var HOST, PORT string
+var host, port, gqlPath, gqlPgPath string
+var isPgEnabled bool
 
 func init() {
-	HOST = utils.MustGet("GQL_SERVER_HOST")
-	PORT = utils.MustGet("GQL_SERVER_PORT")
+	host = utils.MustGet("GQL_SERVER_HOST")
+	port = utils.MustGet("GQL_SERVER_PORT")
+	gqlPath = utils.MustGet("GQL_SERVER_GRAPHQL_PATH")
+	gqlPgPath = utils.MustGet("GQL_SERVER_GRAPHQL_PLAYGROUND_PATH")
+	isPgEnabled = utils.MustGetBool("GQL_SERVER_GRAPHQL_PLAYGROUND_ENABLED")
 }
 
 // Run web server
 func Run() {
+	endpoint := "http://" + host + ":" + port
+
 	r := gin.Default()
 	// Setup routes
 	r.GET("/ping", handlers.Ping())
-	log.Println("Running @ http://" + HOST + ":" + PORT )
-	log.Fatalln(r.Run(HOST + ":" + PORT))
+
+	if isPgEnabled {
+		r.GET(gqlPgPath, handlers.PlaygroundHandler(gqlPath))
+		log.Println("GraphQL Playground @ " + endpoint + gqlPgPath)
+	}
+
+	r.POST(gqlPath, handlers.GraphqlHandler())
+	log.Println("GraphQL @ " + endpoint + gqlPath)
+
+	log.Println("Running @ http://" + host + ":" + port )
+	log.Fatalln(r.Run(host + ":" + port))
 }

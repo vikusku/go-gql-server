@@ -14,13 +14,13 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: internal/gql/models/generated.go
+  filename: internal/gql/models/generated_models.go
   package: models
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: internal/gql/resolvers/generated.go
+  dir: internal/gql/resolvers/
   package: resolvers
 
 # Optional: turn on use `gqlgen:"fieldName"` tags in your models
