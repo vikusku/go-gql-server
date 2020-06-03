@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/vikusku/go-gql-server/pkg/utils"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +11,8 @@ import (
 var HOST, PORT string
 
 func init() {
-	HOST = "localhost"
-	PORT = "7777"
+	HOST = utils.MustGet("GQL_SERVER_HOST")
+	PORT = utils.MustGet("GQL_SERVER_PORT")
 }
 
 // Run web server
