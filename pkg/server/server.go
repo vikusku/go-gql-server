@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/vikusku/go-gql-server/internal/orm"
 	"github.com/vikusku/go-gql-server/pkg/utils"
 	"log"
 
@@ -20,7 +21,9 @@ func init() {
 }
 
 // Run web server
-func Run() {
+func Run(orm *orm.ORM) {
+	log.Println("GORM_CONNECTION_DSN: ", utils.MustGet("GORM_CONNECTION_DSN"))
+
 	endpoint := "http://" + host + ":" + port
 
 	r := gin.Default()
@@ -32,7 +35,7 @@ func Run() {
 		log.Println("GraphQL Playground @ " + endpoint + gqlPgPath)
 	}
 
-	r.POST(gqlPath, handlers.GraphqlHandler())
+	r.POST(gqlPath, handlers.GraphqlHandler(orm))
 	log.Println("GraphQL @ " + endpoint + gqlPath)
 
 	log.Println("Running @ http://" + host + ":" + port )
